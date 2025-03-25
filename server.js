@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
@@ -24,7 +23,7 @@ async function getTeamsFromDatabase() {
     const db = client.db('Rafael');
     const teamStatsCollection = db.collection('teamStats');
 
-    const teams = await teamStatsCollection.distinct('Team'); // Changed from 'team' to 'Team'
+    const teams = await teamStatsCollection.distinct('Team');
     return teams;
   } catch (err) {
     console.error('Error fetching teams:', err);
@@ -42,7 +41,7 @@ async function getTeamStats(teamName) {
     const db = client.db('Rafael');
     const teamStatsCollection = db.collection('teamStats');
 
-    const teamStats = await teamStatsCollection.findOne({ Team: teamName }); // Changed from 'team' to 'Team'
+    const teamStats = await teamStatsCollection.findOne({ Team: teamName });
     return teamStats;
   } catch (err) {
     console.error('Error fetching team stats:', err);
@@ -75,16 +74,51 @@ app.post('/api/compare', async (req, res) => {
 
 function compareAndHighlightStats(team1Stats, team2Stats) {
   const statsToCompare = [
-    'Games Played', 'Wins', 'Losses', 'Minutes Played', 'Points', 'Field Goals Made',
-    'Fiel Goals Attempts', 'FG Percentage', '3 Pts Made', '3 Pts Attempted',
-    '3pts Percentage', 'Free Throw Made', 'Free Throws Attempt', 'Free Throw Percentage',
-    'OFF Reb', 'DEF Reb', 'Rebounds', 'Assist', 'Turnovers', 'Steals', 'Blocks',
-    'Blocks Against', 'Fouls', 'Fouls Against', 'Plus or Minus', 'Plus Minus Per Game', 'Winning Percentage'
+    'Games Played',
+    'Wins',
+    'Losses',
+    'Winning Percentage',
+    'Minutes Played',
+    'Points',
+    'Field Goals Made',
+    'Field Goals Attempts', // Corrected from 'Fiel Goals Attempts'
+    'FG Percentage',
+    '3 Pts Made',
+    '3 Pts Attempted',
+    '3pts Percentage',
+    'Free Throw Made',
+    'Free Throws Attempt',
+    'Free Throw Percentage',
+    'OFF Reb',
+    'DEF Reb',
+    'Rebounds',
+    'Assist',
+    'Turnovers',
+    'Steals',
+    'Blocks',
+    'Blocks Against',
+    'Fouls',
+    'Fouls Against',
+    'Plus or Minus',
+    'Offensive Rating',
+    'Defensive Rating',
+    'Net Rating',
+    'Assist Percentage',
+    'Assist to Turnover Ratio',
+    'Assist Ratio',
+    'Offensive Rebound Percentage',
+    'Defensive Rebound Percentage',
+    'Rebound Percentage',
+    'Turnover Percentage',
+    'Effective Field Goal Percentage',
+    'True Shooting Percentage',
+    'Pace',
+    'Player Impact Estimate'
   ];
 
   const comparisonResults = {
-    team1: { Team: team1Stats.Team, stats: {} }, // Changed from 'team' to 'Team'
-    team2: { Team: team2Stats.Team, stats: {} }  // Changed from 'team' to 'Team'
+    team1: { Team: team1Stats.Team, stats: {} },
+    team2: { Team: team2Stats.Team, stats: {} }
   };
 
   statsToCompare.forEach(stat => {
